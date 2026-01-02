@@ -6,114 +6,147 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <style>
-  body {
-    margin: 0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #0b0f1a;
-    color: #fff;
-  }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #0b0f1a;
+  color: #fff;
+}
 
-  .container {
-    max-width: 520px;
-    margin: 40px auto;
-    padding: 24px;
-  }
+.container {
+  max-width: 520px;
+  margin: 40px auto;
+  padding: 24px;
+}
 
-  h1 {
-    font-size: 22px;
-    margin-bottom: 16px;
-  }
+h1 {
+  font-size: 22px;
+  margin-bottom: 16px;
+}
 
-  .card {
-    background: #12182a;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
+.card {
+  background: #12182a;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
 
-  .label {
-    font-size: 13px;
-    opacity: 0.8;
-    margin-bottom: 6px;
-  }
+.label {
+  font-size: 13px;
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
 
-  select, button {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: none;
-    font-size: 15px;
-  }
+input, select, button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 15px;
+}
 
-  select {
-    background: #1b2240;
-    color: #fff;
-  }
+input, select {
+  background: #1b2240;
+  color: #fff;
+}
 
-  .methods {
-    display: grid;
-    gap: 12px;
-  }
+.methods {
+  display: grid;
+  gap: 12px;
+}
 
-  .method {
-    padding: 14px;
-    border-radius: 10px;
-    background: #1b2240;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-  }
+.method {
+  padding: 14px;
+  border-radius: 10px;
+  background: #1b2240;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
 
-  .method.disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
+.method.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 
-  .method.active {
-    outline: 2px solid #4da3ff;
-  }
+.method.active {
+  outline: 2px solid #4da3ff;
+}
 
-  .price {
-    margin-top: 10px;
-    font-size: 14px;
-    line-height: 1.6;
-  }
+.price {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+}
 
-  .pay {
-    margin-top: 20px;
-    background: #4da3ff;
-    color: #000;
-    font-weight: bold;
-    cursor: pointer;
-  }
+.pay {
+  margin-top: 20px;
+  background: #4da3ff;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-  .pay:disabled {
-    background: #555;
-    cursor: not-allowed;
-  }
+.pay:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
 
-  .note {
-    font-size: 12px;
-    opacity: 0.7;
-    margin-top: 12px;
-  }
+.note {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-top: 12px;
+}
+
+/* 完了画面 */
+.complete {
+  display: none;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.check {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #4da3ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  color: #000;
+  margin: 0 auto 20px;
+  animation: pop 0.6s ease-out;
+}
+
+@keyframes pop {
+  0% { transform: scale(0); }
+  80% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
 </style>
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="payPage">
   <h1>お支払い手続き</h1>
+
+  <div class="card">
+    <div class="label">メールアドレス</div>
+    <input type="email" id="email" placeholder="example@email.com" required>
+  </div>
 
   <div class="card">
     <div class="label">プラン選択</div>
     <select id="plan">
+      <option value="server_only">高性能サーバー単体プラン（8000円）</option>
       <option value="server">サーバープラン（3000円）</option>
-      <option value="study">学習セットプラン</option>
+      <option value="study">学習セットプラン（5000円）</option>
     </select>
 
     <div class="price" id="priceArea">
-      サーバー利用料：3000円  
+      サーバー利用料：3000円
     </div>
   </div>
 
@@ -136,41 +169,61 @@
     </button>
 
     <div class="note">
-      学習セットプランの教材費2000円は  
-      教材お渡し後に別途お支払いいただきます
-      ※お渡し後、メールを送らせていただきます
+      学習セットプランは  
+      サーバー代3000円のみ先払い  
+      教材費2000円は後払いです
     </div>
   </div>
 </div>
 
+<div class="container complete" id="completePage">
+  <div class="check">✓</div>
+  <h1>確認しました</h1>
+  <p>メールに情報を送信しました！</p>
+</div>
+
 <script>
-  const plan = document.getElementById("plan");
-  const priceArea = document.getElementById("priceArea");
-  const paypay = document.getElementById("paypay");
-  const payBtn = document.getElementById("payBtn");
+const plan = document.getElementById("plan");
+const priceArea = document.getElementById("priceArea");
+const paypay = document.getElementById("paypay");
+const payBtn = document.getElementById("payBtn");
+const email = document.getElementById("email");
 
-  let payMethod = null;
+let payMethod = null;
 
-  plan.addEventListener("change", () => {
-    if (plan.value === "study") {
-      priceArea.innerHTML =
-        "サーバー利用料：3000円（先払い）<br>教材費：2000円（後払い）";
-    } else {
-      priceArea.innerHTML = "サーバー利用料：3000円";
-    }
-  });
+plan.addEventListener("change", () => {
+  if (plan.value === "study") {
+    priceArea.innerHTML =
+      "サーバー利用料：3000円（先払い）<br>教材費：2000円（後払い）";
+  } else if (plan.value === "server") {
+    priceArea.innerHTML = "サーバープラン：3000円";
+  } else {
+    priceArea.innerHTML = "高性能サーバー単体プラン：8000円";
+  }
+});
 
-  paypay.addEventListener("click", () => {
-    payMethod = "paypay";
-    paypay.classList.add("active");
-    payBtn.disabled = false;
-  });
+paypay.addEventListener("click", () => {
+  payMethod = "paypay";
+  paypay.classList.add("active");
+  if (email.value) payBtn.disabled = false;
+});
 
-  payBtn.addEventListener("click", () => {
-    if (payMethod === "paypay") {
-      location.href = "https://qr.paypay.ne.jp/p2p01_XrzCCePgqbP7fSzl";
-    }
-  });
+email.addEventListener("input", () => {
+  if (email.value && payMethod) payBtn.disabled = false;
+  else payBtn.disabled = true;
+});
+
+payBtn.addEventListener("click", () => {
+  location.href = "https://qr.paypay.ne.jp/p2p01_XrzCCePgqbP7fSzl";
+});
+
+/* 決済後用：手動確認ボタン想定 */
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    document.getElementById("payPage").style.display = "none";
+    document.getElementById("completePage").style.display = "block";
+  }
+});
 </script>
 
 </body>
