@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<title>お支払い | Rental Server Program</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #0b0f1a;
+    color: #fff;
+  }
+
+  .container {
+    max-width: 520px;
+    margin: 40px auto;
+    padding: 24px;
+  }
+
+  h1 {
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+
+  .card {
+    background: #12182a;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .label {
+    font-size: 13px;
+    opacity: 0.8;
+    margin-bottom: 6px;
+  }
+
+  select, button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    font-size: 15px;
+  }
+
+  select {
+    background: #1b2240;
+    color: #fff;
+  }
+
+  .methods {
+    display: grid;
+    gap: 12px;
+  }
+
+  .method {
+    padding: 14px;
+    border-radius: 10px;
+    background: #1b2240;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .method.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .method.active {
+    outline: 2px solid #4da3ff;
+  }
+
+  .price {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .pay {
+    margin-top: 20px;
+    background: #4da3ff;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .pay:disabled {
+    background: #555;
+    cursor: not-allowed;
+  }
+
+  .note {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-top: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>お支払い手続き</h1>
+
+  <div class="card">
+    <div class="label">プラン選択</div>
+    <select id="plan">
+      <option value="server">サーバープラン（3000円）</option>
+      <option value="study">学習セットプラン</option>
+    </select>
+
+    <div class="price" id="priceArea">
+      サーバー利用料：3000円  
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="label">決済方法</div>
+    <div class="methods">
+      <div class="method disabled">
+        コンビニ支払い
+        <span>現在使用不可</span>
+      </div>
+
+      <div class="method" id="paypay">
+        PayPay
+        <span>即時決済</span>
+      </div>
+    </div>
+
+    <button class="pay" id="payBtn" disabled>
+      PayPayで支払う
+    </button>
+
+    <div class="note">
+      学習セットプランの教材費2000円は  
+      教材お渡し後に別途お支払いいただきます
+    </div>
+  </div>
+</div>
+
+<script>
+  const plan = document.getElementById("plan");
+  const priceArea = document.getElementById("priceArea");
+  const paypay = document.getElementById("paypay");
+  const payBtn = document.getElementById("payBtn");
+
+  let payMethod = null;
+
+  plan.addEventListener("change", () => {
+    if (plan.value === "study") {
+      priceArea.innerHTML =
+        "サーバー利用料：3000円（先払い）<br>教材費：2000円（後払い）";
+    } else {
+      priceArea.innerHTML = "サーバー利用料：3000円";
+    }
+  });
+
+  paypay.addEventListener("click", () => {
+    payMethod = "paypay";
+    paypay.classList.add("active");
+    payBtn.disabled = false;
+  });
+
+  payBtn.addEventListener("click", () => {
+    if (payMethod === "paypay") {
+      location.href = "https://qr.paypay.ne.jp/p2p01_XrzCCePgqbP7fSzl";
+    }
+  });
+</script>
+
+</body>
+</html>
